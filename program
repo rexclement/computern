@@ -312,3 +312,40 @@ print("\n")
 #c-cost matrix
 #nodeb-nodeeighbors
 #1000 considered as infinity
+
+
+
+9 error correction in java
+
+import java.util.Scanner;
+
+public class ErrorCorrectionCode {
+
+    static String xor(String a, String b) {
+        StringBuilder result = new StringBuilder();
+        for (int i = 1; i < b.length(); i++) result.append(a.charAt(i) == b.charAt(i) ? '0' : '1');
+        return result.toString();
+    }
+
+    static String encode(String data, String gen) {
+        while (data.length() < gen.length() + data.length()) data = data.charAt(0) == '1' ? xor(data, gen) + data.substring(gen.length()) : data.substring(1);
+        return data + "0".repeat(gen.length() - 1);
+    }
+
+    static boolean checkCRC(String data, String gen) {
+        return data.length() > gen.length() ? checkCRC(xor(data, gen) + data.substring(gen.length()), gen) : data.substring(0, gen.length() - 1).equals("0".repeat(gen.length() - 1));
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter binary data: ");
+        String data = sc.nextLine();
+        System.out.print("Enter generator polynomial: ");
+        String gen = sc.nextLine();
+        String encoded = encode(data, gen);
+        System.out.println("Encoded data: " + encoded);
+        System.out.print("Enter received data: ");
+        System.out.println(checkCRC(sc.nextLine(), gen) ? "Data is correct." : "Data has errors.");
+        sc.close();
+    }
+}
