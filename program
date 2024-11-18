@@ -203,6 +203,8 @@ $ns at 2.5 "$ftp stop"
 $ns at 3 "finish"
 $ns run
 
+TCP PRO
+
 #Create a simulator object
 set ns [new Simulator]
 #Define different colors for data flows (for NAM)
@@ -259,3 +261,54 @@ puts "CBR packet size = [$cbr set packet_size_]"
 puts "CBR interval =[$cbr setinterval_]"
 #Run the simulation
 $ns run
+
+
+8   ROUTING ALGORITHMS – DISTANCE VECTOR ROUTING
+
+Source Code:
+def bfe(c,intermediate_node,neighbor,no_node):
+flag=0
+for i in neighbor:
+for j in range(no_node):
+if((c[i][intermediate_node]+c[intermediate_node][j])< c[i][j]):
+#Using Bellman Ford Equation
+c[i][j]=c[i][intermediate_node]+c[intermediate_node][j]
+flag=1
+#c[i][i]=0
+if(flag==1):
+bfe(c,i,neighbor_set[i],no_node)
+if(flag==0 and intermediate_node<no_node-1):
+intermediate_node+=1
+Expt No : 8 a
+ROUTING ALGORITHMS – DISTANCE VECTOR ROUTING
+Date :
+bfe(c,intermediate_node,neighbor_set[intermediate_node],no_node)
+return
+no_node=int(input("Enter the number of nodes:"))
+c=[[0 for j in range(no_node)] for i in range(no_node)]
+for i in range(no_node):
+print("Enter initial cost for node ",i,": ")
+for j in range(no_node):
+c[i][j]=int(input())
+print("Initial cost matrix :\n")
+for i in range(no_node):
+for j in range(no_node):
+print(c[i][j],end=" ")
+print("\n")
+neighbor_set=[[] for i in range(no_node)]
+for i in range(no_node):
+for j in range(no_node):
+if(i!=j): #always reachable from its own node
+if(c[i][j]!=1000):
+neighbor_set[i].append(j)
+print("Neighbors : \n",neighbor_set,"\n")
+bfe(c,0,neighbor_set[0],no_node) #initial call
+print("final cost matrix :\n")
+for i in range(no_node):
+for j in range(no_node):
+print(c[i][j],end=" ")
+print("\n")
+#no_node-number of nodes
+#c-cost matrix
+#nodeb-nodeeighbors
+#1000 considered as infinity
