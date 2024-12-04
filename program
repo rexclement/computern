@@ -50,9 +50,6 @@ server.listen(1)
 print(“waiting for connection”)
 connection, client_address=server.accept()
 message=" "
-Expt No : 3 b
-IMPLEMENTING CHAT APPLICATION USING TCP SOCKETS
-Date :
 while message!="end":
 data=connection.recv(1000).decode()
 if data:
